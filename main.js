@@ -7,8 +7,8 @@ var weatherData = {};
 $(document).ready(init);
 
 function init() {
-	getLocation();
-	getWeather(refreshPane);
+	getLocation(true,function(){getWeather(refreshPane)});
+	
 	$('.refresh').click(function(){
 		getWeather(refreshPane);
 	});
@@ -18,13 +18,17 @@ function init() {
 //gets current location off of user's ip addr
 //returns user's nearest weather station zip code
 //otherwise, default
-function getLocation() {
+//refresh=true, also refresh too
+function getLocation(refresh,refreshCb) {
 	var url = apiUrl + 'geolookup/q/autoip.json';
 
 	$.get(url)
 	.done(function(data){
 		//console.log(data);
 		currZip = data.location.l.match(/\d\d\d\d\d/)[0];
+		if (refresh) {
+			refreshCb();
+		}
 		return currZip;
 	})
 	.fail(function(data){
@@ -64,8 +68,8 @@ function refreshPane() {
 	$('.pane > div').empty().append($div);
 }
 
-function changeLocation(zip) {
-	currZip = zip;
-	getLocation();
+function changeLocation(e) {
+	console.log(e.target);
+	currZip = $('#zip').val();;
 	getWeather(refreshPane);
 }
