@@ -3,14 +3,19 @@
 var apiUrl = 'http://api.wunderground.com/api/196ab87c421083e2/';
 var currZip = '90621';
 var weatherData = {};
+var forecastData = {};
 
 $(document).ready(init);
 
 function init() {
-	getLocation(true,function(){getWeather(refreshPane)});
+	getLocation(true,function(){
+		getWeather(refreshPane);
+		getForecast(refreshForecastPane);
+	});
 	
 	$('.refresh').click(function(){
 		getWeather(refreshPane);
+		getForecast(refreshForecastPane);
 	});
 	$('#changeloc').click(changeLocation);
 }
@@ -47,29 +52,60 @@ function getWeather(refreshCb) {
 		refreshCb();
 	})
 	.fail(function(data){
-		console.log(data);
 		console.log('Server not available.');
 	});
 }
 
 function refreshPane() {
-	//weatherData
+	var wd = weatherData.current_observation;
+
 	var $div = $('<div>');
-	var $p1 = $('<p>').text(weatherData.current_observation.display_location.full);
-	var $img = $('<img>').attr('src',weatherData.current_observation.icon_url);
-	var $p2 = $('<p>').text(weatherData.current_observation.weather);
-	var $p3 = $('<p>').text(weatherData.current_observation.temp_f + 'F / ' + weatherData.current_observation.temp_c + 'C');
-	var $p4 = $('<p>').text('Feels like: ' +weatherData.current_observation.feelslike_string);
-	var $p5 = $('<p>').text('Humidity: ' + weatherData.current_observation.relative_humidity);
-	var $p6 = $('<p>').text('Wind: ' +weatherData.current_observation.wind_string);
-	var $p7 = $('<p>').text(weatherData.current_observation.observation_time);
+	var $p1 = $('<p>').text(wd.display_location.full);
+	var $img = $('<img>').attr('src',wd.icon_url);
+	var $p2 = $('<p>').text(wd.weather);
+	var $p3 = $('<p>').text(wd.temp_f + 'F / ' + wd.temp_c + 'C');
+	var $p4 = $('<p>').text('Feels like: ' +wd.feelslike_string);
+	var $p5 = $('<p>').text('Humidity: ' + wd.relative_humidity);
+	var $p6 = $('<p>').text('Wind: ' +wd.wind_string);
+	var $p7 = $('<p>').text(wd.observation_time);
 	$div.append($p1,$img,$p2,$p3,$p4,$p5,$p6,$p7);
 
 	$('.pane > div').empty().append($div);
 }
 
 function changeLocation(e) {
-	console.log(e.target);
-	currZip = $('#zip').val();;
+	currZip = $('#zip').val();
 	getWeather(refreshPane);
+	getForecast(refreshForecastPane);
+}
+
+function getForecast(refreshCb) {
+	var url = apiUrl + 'forecast/q/' + currZip + '.json';
+
+	$.get(url)
+	.done(function(data){
+		forecastData = data;
+		refreshCb();
+	})
+	.fail(function(data){
+		console.log('Server not available.');
+	});
+}
+
+function refreshForecastPane() {
+	var fc = forecastData.forecast.simpleforecast.forecastday;
+	var $outerdiv = $('<div>');
+	$(fc).each(function(i,el){
+		var $div = $('<div>').addClass('forecast');
+		var $p1 = $('<p>').text(el.date.weekday_short);
+		var $p2 = $('<p>').text(el.date.month + '/' + el.date.day);	
+		var $img = $('<img>').attr('src',el.icon_url);
+		var $p3 = $('<p>').text(el.conditions);
+		var $p4 = $('<p>').text('High: ' + el.high.fahrenheit + 'F / ' + el.high.celsius + 'C');
+		var $p5 = $('<p>').text('Low: ' + el.low.fahrenheit + 'F / ' + el.low.celsius + 'C');
+		$div.append($p1,$p2,$img,$p3,$p4,$p5);
+		$outerdiv.append($div);
+	});
+	
+	$('.forecastPane').empty().append($outerdiv);
 }

@@ -7,15 +7,19 @@ h1,label {
 .pane {
 	border: 2px solid black;
 	border-radius: 4px;
-	/* display: inline-block; */
 	margin: 10px;
 	padding: 5px;
 	text-align: center;
 }
-/*.card .name {
+/*.forecast {
 	font-size: 20px;
 	font-weight: bold;
 }*/
-/*.card p {
+.forecast {
 	display: inline-block;
-}*/
+	border: 2px solid gray;
+	border-radius: 4px;
+	margin: 10px;
+	padding: 5px;
+	text-align: center;
+}
