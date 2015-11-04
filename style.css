@@ -1,0 +1,20 @@
+body {
+}
+h1,label {
+
+}
+.pane {
+	border: 1px solid black;
+	border-radius: 4px;
+	/* display: inline-block; */
+	margin: 10px;
+	padding: 5px;
+	text-align: center;
+}
+/*.card .name {
+	font-size: 20px;
+	font-weight: bold;
+}*/
+/*.card p {
+	display: inline-block;
+}*/
