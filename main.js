@@ -29,15 +29,13 @@ function getLocation(refresh,refreshCb) {
 
 	$.get(url)
 	.done(function(data){
-		//console.log(data);
-		currZip = data.location.l.match(/\d\d\d\d\d/)[0];
+		currZip = data.location.l.match(/\d{5}/)[0];
 		if (refresh) {
 			refreshCb();
 		}
 		return currZip;
 	})
 	.fail(function(data){
-		console.log(data);
 		console.log('Server not available. Resorting to default.');
 		return currZip;
 	});
