@@ -59,16 +59,16 @@ function getWeather(refreshCb) {
 
 function kelvinToC(k) {
 	var kelvinOffset = 273.15;
-	return k - kelvinOffset;
+	return (k - kelvinOffset).toFixed(0);
 }
 
 function kelvinToF(k) {
 	var c = kelvinToC(k);
-	return cToF(c);
+	return cToF(c).toFixed(0);
 }
 
 function cToF(c) {
-	return c * 1.8 + 32;
+	return (c * 1.8 + 32).toFixed(0);
 }
 
 function refreshPane() { //for openweathermap.org
