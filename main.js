@@ -14,7 +14,9 @@ function init() {
 		getWeather(refreshPane);
 		getForecast(refreshForecastPane);
 	//});
-	
+	$(window).keydown(function(e){
+		if (e.keyCode == 13) changeLocation();
+	});
 	$('.refresh').click(function(){
 		getWeather(refreshPane);
 		getForecast(refreshForecastPane);
