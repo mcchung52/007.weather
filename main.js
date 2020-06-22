@@ -44,7 +44,7 @@ function getLocation(refresh,refreshCb) {
 }
 
 function getWeather(refreshCb) {
-	var url = `{apiUrl}/weather?appid={appKey}&zip={currZip}`;
+	var url = `${apiUrl}/weather?appid=${appKey}&zip=${currZip}`;
 	//var url = apiUrl + 'conditions/q/' + currZip + '.json';
 
 	$.get(url)
@@ -63,7 +63,7 @@ function refreshPane() { //for openweathermap.org
 	var $div = $('<div>');
 	
 	var $location = $('<p>').text(wd.name);
-	var $icon = $('<img>').attr('src',`http://openweathermap.org/img/wn/{wd.weather[0].icon}@2x.png`);
+	var $icon = $('<img>').attr('src',`http://openweathermap.org/img/wn/${wd.weather[0].icon}@2x.png`);
 	var $p2 = $('<p>').text(wd.weather);
 	var $temp = $('<p>').text(wd.main.temp + 'F / ' + wd.main.temp + 'C');
 	var $feels = $('<p>').text('Feels like: ' +wd.main.feels_like);
