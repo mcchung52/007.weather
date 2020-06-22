@@ -57,6 +57,20 @@ function getWeather(refreshCb) {
 	});
 }
 
+function kelvinToC(k) {
+	var kelvinOffset = 273.15;
+	return k - kelvinOffset;
+}
+
+function kelvinToF(k) {
+	var c = kelvinToC(k);
+	return cToF(c);
+}
+
+function cToF(c) {
+	return c * 1.8 + 32;
+}
+
 function refreshPane() { //for openweathermap.org
 	var wd = weatherData;
 
@@ -64,8 +78,8 @@ function refreshPane() { //for openweathermap.org
 	
 	var $location = $('<p>').text(wd.name);
 	var $icon = $('<img>').attr('src',`http://openweathermap.org/img/wn/${wd.weather[0].icon}@2x.png`);
-	var $p2 = $('<p>').text(wd.weather);
-	var $temp = $('<p>').text(wd.main.temp + 'F / ' + wd.main.temp + 'C');
+	var $p2 = $('<p>').text(wd.weather[0].main + ' - ' + wd.weather[0].description);
+	var $temp = $('<p>').text(kelvinToF(wd.main.temp) + 'F / ' + kelvinToC(wd.main.temp) + 'C');
 	var $feels = $('<p>').text('Feels like: ' +wd.main.feels_like);
 	var $hum = $('<p>').text('Humidity: ' + wd.main.humidity);
 	var $wind = $('<p>').text('Wind: ' +wd.wind.speed);
