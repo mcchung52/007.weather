@@ -80,7 +80,7 @@ function refreshPane() { //for openweathermap.org
 	var $icon = $('<img>').attr('src',`http://openweathermap.org/img/wn/${wd.weather[0].icon}@2x.png`);
 	var $p2 = $('<p>').text(wd.weather[0].main + ' - ' + wd.weather[0].description);
 	var $temp = $('<p>').text(kelvinToF(wd.main.temp) + 'F / ' + kelvinToC(wd.main.temp) + 'C');
-	var $feels = $('<p>').text('Feels like: ' +wd.main.feels_like);
+	var $feels = $('<p>').text('Feels like: ' + kelvinToF(wd.main.feels_like));
 	var $hum = $('<p>').text('Humidity: ' + wd.main.humidity);
 	var $wind = $('<p>').text('Wind: ' +wd.wind.speed);
 	var $ob_time = $('<p>').text(Date(wd.dt));
