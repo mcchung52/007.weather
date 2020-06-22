@@ -64,7 +64,7 @@ function kelvinToC(k) {
 
 function kelvinToF(k) {
 	var c = kelvinToC(k);
-	return cToF(c).toFixed(0);
+	return cToF(c);
 }
 
 function cToF(c) {
