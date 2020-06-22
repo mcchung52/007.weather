@@ -1,6 +1,8 @@
 'use strict';
 
-var apiUrl = 'http://api.wunderground.com/api/196ab87c421083e2/';
+var appKey = 'afe6a27a1172ee772bbbcbe688547e7a';
+var apiUrl = 'https://api.openweathermap.org/data/2.5';
+//var apiUrl = 'http://api.wunderground.com/api/196ab87c421083e2/';
 var currZip = '90621';
 var weatherData = {};
 var forecastData = {};
@@ -8,10 +10,10 @@ var forecastData = {};
 $(document).ready(init);
 
 function init() {
-	getLocation(true,function(){
+	//getLocation(true,function(){
 		getWeather(refreshPane);
 		getForecast(refreshForecastPane);
-	});
+	//});
 	
 	$('.refresh').click(function(){
 		getWeather(refreshPane);
@@ -42,7 +44,8 @@ function getLocation(refresh,refreshCb) {
 }
 
 function getWeather(refreshCb) {
-	var url = apiUrl + 'conditions/q/' + currZip + '.json';
+	var url = `{apiUrl}/weather?appid={appKey}&zip={currZip}`;
+	//var url = apiUrl + 'conditions/q/' + currZip + '.json';
 
 	$.get(url)
 	.done(function(data){
@@ -54,10 +57,30 @@ function getWeather(refreshCb) {
 	});
 }
 
-function refreshPane() {
+function refreshPane() { //for openweathermap.org
+	var wd = weatherData;
+
+	var $div = $('<div>');
+	
+	var $location = $('<p>').text(wd.name);
+	var $icon = $('<img>').attr('src',`http://openweathermap.org/img/wn/{wd.weather[0].icon}@2x.png`);
+	var $p2 = $('<p>').text(wd.weather);
+	var $temp = $('<p>').text(wd.main.temp + 'F / ' + wd.main.temp + 'C');
+	var $feels = $('<p>').text('Feels like: ' +wd.main.feels_like);
+	var $hum = $('<p>').text('Humidity: ' + wd.main.humidity);
+	var $wind = $('<p>').text('Wind: ' +wd.wind.speed);
+	var $ob_time = $('<p>').text(Date(wd.dt));
+	
+	$div.append($location, $icon, $p2, $temp, $feels, $hum, $wind, $ob_time);
+
+	$('.pane > div').empty().append($div);
+}
+
+function refreshPane1() {
 	var wd = weatherData.current_observation;
 
 	var $div = $('<div>');
+	
 	var $p1 = $('<p>').text(wd.display_location.full);
 	var $img = $('<img>').attr('src',wd.icon_url);
 	var $p2 = $('<p>').text(wd.weather);
@@ -66,6 +89,7 @@ function refreshPane() {
 	var $p5 = $('<p>').text('Humidity: ' + wd.relative_humidity);
 	var $p6 = $('<p>').text('Wind: ' +wd.wind_string);
 	var $p7 = $('<p>').text(wd.observation_time);
+	
 	$div.append($p1,$img,$p2,$p3,$p4,$p5,$p6,$p7);
 
 	$('.pane > div').empty().append($div);
